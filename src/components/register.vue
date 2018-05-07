@@ -9,7 +9,7 @@
           <ul>
               <li>
                   <i class="iconfont icon-shouji-tianchong"></i>
-                  <input type="text" placeholder="请输入手机号" v-model="account">
+                  <input type="text" placeholder="请输入用户名" v-model="username">
               </li>
                <li>
                   <i class="iconfont icon-yduidunpaishixin"></i>
@@ -22,7 +22,7 @@
               </li>
               <li>
                   <i class="iconfont icon-wode1"></i>
-                  <input type="text" placeholder="潮流口令（非必填）">
+                  <input type="text" placeholder="昵称" v-model="nickname">
               </li>
           </ul>
       </div>
@@ -37,28 +37,41 @@
   </div> 
 </template>
 <script>
+import { Toast } from 'mint-ui';
+import axios from 'axios'
 export default {
   data () {
     return {
-      account: '',
+      username: '',
       password: '',
+      nickname:'',
       randomNum:''
     }
   },
   methods: {
     register () {
       let params = {
-        account: this.account,
-        password: this.password
+        username: this.username,
+        password: this.password,
+        nickname: this.nickname
       }
-      this.$http.post('/api/user/register', params)
+      axios.post('/api/user/register', params)
         .then((response) => {
-          console.log(response)
-          var message = response.body.message
-          if (response.body.status === 1000) {
-            message = this.account + ' ' + message
+        //    console.log(response)
+          var message = response.data.message
+          if (response.data.status === 1000) {
+            message = this.username + ' ' + message
           }
-          alert(message)
+           Toast({message });
+           let self = this;
+           
+            if(response.data.status === 1000){
+            setTimeout(function(){
+               self.$router.push({path:'/login'})
+               },1000)
+            }
+           
+           
         })
         .catch((reject) => {
           console.log(reject)

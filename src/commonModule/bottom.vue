@@ -18,7 +18,6 @@ export default {
           navs:[
               {text:'首页',icon:'shouye',path:'MainIndex'},
               {text:'分类',icon:'icon--',path:'classify'},
-              {text:'逛',icon:'huojian',path:'ShoppingMall'},
               {text:'购物车',icon:'gouwuche',path:'ShoppingCar'},
               {text:'我的',icon:'wode',path:'Main'},
           ],

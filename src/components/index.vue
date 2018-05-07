@@ -141,165 +141,13 @@
       </div>
       <div class="list-auto">
         <ul class="auto">
-          <li>
-            <router-link :to="{}">
-              <img src="../assets/index/img26.jpg" alt="">
-              <span>￥299.00</span>
-              <span>132人</span>
+          <li v-for="item in productList" :key="item.id" @click="toDetail(item.id)">
+            <!-- <router-link :to="{name:'productDetails'}"> -->
+              <img :src="item.imgurl" alt="">
+              <span>￥{{item.price}}</span>
+              <span>{{item.person}}</span>
               <span>正在浏览</span>
-            </router-link>
-          </li>
-          <li>
-            <router-link :to="{}">
-              <img src="../assets/index/img27.jpg" alt="">
-              <span>￥299.00</span>
-              <span>132人</span>
-              <span>正在浏览</span>
-            </router-link>
-          </li>
-          <li>
-            <router-link :to="{}">
-              <img src="../assets/index/img28.jpg" alt="">
-              <span>￥299.00</span>
-              <span>132人</span>
-              <span>正在浏览</span>
-            </router-link>
-          </li>
-          <li>
-            <router-link :to="{}">
-              <img src="../assets/index/img29.jpg" alt="">
-              <span>￥299.00</span>
-              <span>132人</span>
-              <span>正在浏览</span>
-            </router-link>
-          </li>
-          <li>
-            <router-link :to="{}">
-              <img src="../assets/index/img30.jpg" alt="">
-              <span>￥299.00</span>
-              <span>132人</span>
-              <span>正在浏览</span>
-            </router-link>
-          </li>
-          <li>
-            <router-link :to="{}">
-              <img src="../assets/index/img31.jpg" alt="">
-              <span>￥299.00</span>
-              <span>132人</span>
-              <span>正在浏览</span>
-            </router-link>
-          </li>
-          <li>
-            <router-link :to="{}">
-              <img src="../assets/index/img32.jpg" alt="">
-              <span>￥299.00</span>
-              <span>132人</span>
-              <span>正在浏览</span>
-            </router-link>
-          </li>
-          <li>
-            <router-link :to="{}">
-              <img src="../assets/index/img33.jpg" alt="">
-              <span>￥299.00</span>
-              <span>132人</span>
-              <span>正在浏览</span>
-            </router-link>
-          </li>
-          <li>
-            <router-link :to="{}">
-              <img src="../assets/index/img34.jpg" alt="">
-              <span>￥299.00</span>
-              <span>132人</span>
-              <span>正在浏览</span>
-            </router-link>
-          </li>
-          <li>
-            <router-link :to="{}">
-              <img src="../assets/index/img35.jpg" alt="">
-              <span>￥299.00</span>
-              <span>132人</span>
-              <span>正在浏览</span>
-            </router-link>
-          </li>
-          <li>
-            <router-link :to="{}">
-              <img src="../assets/index/img36.jpg" alt="">
-              <span>￥299.00</span>
-              <span>132人</span>
-              <span>正在浏览</span>
-            </router-link>
-          </li>
-          <li>
-            <router-link :to="{}">
-              <img src="../assets/index/img37.jpg" alt="">
-              <span>￥299.00</span>
-              <span>132人</span>
-              <span>正在浏览</span>
-            </router-link>
-          </li>
-          <li>
-            <router-link :to="{}">
-              <img src="../assets/index/img38.jpg" alt="">
-              <span>￥299.00</span>
-              <span>132人</span>
-              <span>正在浏览</span>
-            </router-link>
-          </li>
-          <li>
-            <router-link :to="{}">
-              <img src="../assets/index/img39.jpg" alt="">
-              <span>￥299.00</span>
-              <span>132人</span>
-              <span>正在浏览</span>
-            </router-link>
-          </li>
-          <li>
-            <router-link :to="{}">
-              <img src="../assets/index/img40.jpg" alt="">
-              <span>￥299.00</span>
-              <span>132人</span>
-              <span>正在浏览</span>
-            </router-link>
-          </li>
-          <li>
-            <router-link :to="{}">
-              <img src="../assets/index/img41.jpg" alt="">
-              <span>￥299.00</span>
-              <span>132人</span>
-              <span>正在浏览</span>
-            </router-link>
-          </li>
-          <li>
-            <router-link :to="{}">
-              <img src="../assets/index/img42.jpg" alt="">
-              <span>￥299.00</span>
-              <span>132人</span>
-              <span>正在浏览</span>
-            </router-link>
-          </li>
-          <li>
-            <router-link :to="{}">
-              <img src="../assets/index/img43.jpg" alt="">
-              <span>￥299.00</span>
-              <span>132人</span>
-              <span>正在浏览</span>
-            </router-link>
-          </li>
-          <li>
-            <router-link :to="{}">
-              <img src="../assets/index/img44.jpg" alt="">
-              <span>￥299.00</span>
-              <span>132人</span>
-              <span>正在浏览</span>
-            </router-link>
-          </li>
-          <li>
-            <router-link :to="{}">
-              <img src="../assets/index/img45.jpg" alt="">
-              <span>￥299.00</span>
-              <span>132人</span>
-              <span>正在浏览</span>
-            </router-link>
+            <!-- </router-link> -->
           </li>
         </ul>
       </div>
@@ -312,12 +160,31 @@
 import YohuHead from './YohuHead/header';
 import Swiper from '../commonModule/swiper';
 import Bottom from '../commonModule/bottom';
+import axios from 'axios';
 export default {
   name: 'MainIndex',
   data () {
     return {
-      msg: 'Welcome to Your Vue.js App'
+      productList:[]
     }
+  },
+  created () {
+    this.getList()
+  },
+  methods: {
+    getList(){
+       let self = this;
+      
+       axios.get('../../static/productList.json').then((response)=>{
+         self.productList = response.data
+       })
+    },
+    toDetail(id){
+      this.$router.push({name:'productDetails',params:{id}})
+    },
+    back(){
+      this.$router.go(-1)
+    },
   },
   components: {
     Swiper,
@@ -396,7 +263,7 @@ export default {
          li{
            width: 0.89rem;
            margin-right: 0.1rem;
-           a{
+           
              img{
                display: inline-block;
                width: 0.89rem;
@@ -406,7 +273,7 @@ export default {
                font-size: 0.1rem;
                display: block;
              }
-           }
+           
          }
        }
      }

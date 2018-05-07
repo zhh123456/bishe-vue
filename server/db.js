@@ -7,15 +7,79 @@ mongoose.connect('mongodb://localhost/test');
 const db = mongoose.connection;
 db.once('error',() => console.log('Mongo connection error'));
 db.once('open',() => console.log('Mongo connection successed'));
-/************** 定义模式loginSchema **************/
+//定义模式loginSchema用户登录信息 
 const loginSchema = mongoose.Schema({
-  account : String,
-  password : String
+  username : String,
+  password : String,
+  nickname:String
 });
+//商品列表
+const goodsSchema = mongoose.Schema({
+  goodid : String,
+  title : String,
+  imgurl:String,
+  price:String,
+  description:String
+});
+//购物车信息
+const carSchema = mongoose.Schema({
+  username:String,
+  goods:[
+    {
+      goodid : String,
+      title : String,
+      imgurl : String,
+      price : String,
+      color : String,
+      size : String,
+      num : String
+    }
+    
+  ]
+  
+});
+//订单信息
+const orderSchema = mongoose.Schema({
+  username:String,
+  orders:[
+    {
+      goodid : String,
+      title : String,
+      imgurl : String,
+      price : String,
+      color : String,
+      size : String,
+      num : String
+    }
+    
+  ]
+  
+});
+
+//收货地址
+const addressSchema = mongoose.Schema({
+  username:String,
+  address:[
+    {
+      reallyname:String,
+      phone:String,
+      province : String,
+      city : String,
+      villages : String,
+      street : String,
+      detailsAddress : String,
+    }
+    
+  ]
+})
 
 /************** 定义模型Model **************/
 const Models = {
-    Login : mongoose.model('Login',loginSchema)
+    Login : mongoose.model('Login',loginSchema),
+    Goods: mongoose.model('Goods',goodsSchema),
+    Car: mongoose.model('Car',carSchema),
+    Order: mongoose.model('Order',orderSchema),
+    Addresses: mongoose.model('Addresses',addressSchema)
 }
 
 module.exports = Models;

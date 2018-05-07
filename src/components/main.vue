@@ -2,16 +2,25 @@
     <div class="main">
         <div class="header">
            <div class="head">
-                <router-link :to="{}">
+                <div @click="back()">
                     <i class="iconfont icon-jiantou4"></i>
-                </router-link>
+                </div>
                 <p>个人中心</p>
-                <router-link :to="{}">
-                    <i class="iconfont icon-icon--"></i>
-                </router-link>
+                <div @click="showList()">
+                    <i class="iconfont icon-icon--"></i> 
+                </div>
+                <ul class="moreClassify" v-if="isList">
+                    <li v-for="nav in navs" :key="nav.icon">
+                        <router-link :to="{name:nav.path}" active-class="active" >
+                            <i :class="'iconfont icon-'+nav.icon"></i>
+                            <span>{{nav.text}}</span> 
+                        </router-link>
+                    </li>
+                </ul>
             </div>
             <div class="login">
-                <router-link to='login'>登录/注册</router-link>
+                <router-link to='login' v-if="isShow">登录/注册</router-link>
+                <a href="" v-else>欢迎用户{{user.user.username}}</a>
             </div>
         </div>
          <div class="center">
@@ -28,8 +37,10 @@
                 <div class="order-header">
                     <span class="title">我的订单</span>
                     <p>
+                        <router-link to="myOrder">
                         <span>全部订单</span>
                         <i class="iconfont icon-jiantou"></i>
+                        </router-link>
                     </p>
                 </div>
                 <div class="order-detail">
@@ -159,9 +170,10 @@
         </div>  
         <div class="bottom">
             <div class="footer">
-                <div class="left">
-                    <a href="">登录 </a>|
-                    <a href=""> 注册</a>
+                <div class="left" @click="exit()">
+                    退出
+                    <!-- <a href="">登录 </a>|
+                    <a href=""> 注册</a> -->
                 </div>
                 <div class="right">
                     <span>回到顶部</span>
@@ -176,8 +188,46 @@
     </div>
 </template>
 <script>
+import {mapState} from 'vuex'
+import axios from 'axios'
+import { Toast } from 'mint-ui';
 export default {
-  
+  data () {
+      return {
+          isShow:true,
+          navs:[
+              {text:'首页',icon:'shouye',path:'MainIndex'},
+              {text:'分类',icon:'icon--',path:'classify'},
+              {text:'购物车',icon:'gouwuche',path:'ShoppingCar'},
+              {text:'我的',icon:'wode',path:'Main'},
+          ],
+          isList:false
+      }
+  },
+  computed: {
+      ...mapState(['user'])
+  },
+  created () {
+         //console.log('user:',this.user.user)
+         if(this.user.user.username){
+             this.isShow = false
+         }
+  },
+  watch: {
+      
+  },
+  methods: {
+      back(){
+        this.$router.go(-1)
+      },
+      showList(){
+          this.isList = true;
+      },
+      exit(){
+          this.$router.push({name:'LoginView'})
+          localStorage.removeItem('userInfo')
+      }
+  }
 }
 </script>
 <style lang="scss" scoped>
@@ -189,16 +239,41 @@ export default {
 }
 .head{
     height: 0.52rem;
-    background: #000000;
+    background: #171717;
     color: #ffffff;
     display: flex;
     justify-content: space-between;
     align-items: center;
     font-size: 0.2rem;
     padding: 0  0.1rem;
+    position: relative;
     i{
         color: #ffffff;
         font-size: 0.2rem;
+    }
+    .moreClassify{
+        width:1.4rem;
+        background: #171717;
+        color:#ffffff;
+        position: absolute;
+        top: 0.53rem;
+        right:0;
+        padding:0.1rem 0;
+        border-radius: 0.1rem;
+        li{
+            line-height: 0.3rem;
+            font-size: 0.14rem;
+           
+            a{
+                color:#ffffff;
+                i{
+                    font-size: 0.14rem;
+                    padding-right: 0.1rem;
+                }
+                
+            }
+        }
+        
     }
 }
 .login{
@@ -320,6 +395,7 @@ export default {
         li{
             padding: 0.16rem;
             width: 49%;
+            position: relative;
             img{
                 height: 2.15rem;
             }
@@ -337,7 +413,9 @@ export default {
                     display: inline-block;
                 }
             }
+            
         }
+        
     }
 }
 .footer{

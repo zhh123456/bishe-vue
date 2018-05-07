@@ -3,7 +3,7 @@
       <div class="content_1">
         <div class="left">
           <ul>
-            <li v-for="(li,index) in list" :key="li.id" @click="id= li.id;getList(index)" :class="{active:index == isActive}">{{li.title}}</li>
+            <li v-for="(li,index) in list" :key="li.id" @click="id= li.id;getList(li.id)" :class="{active:li.id == isActive}">{{li.title}}</li>
           </ul>
         </div>
         <div class="right">
@@ -33,7 +33,7 @@ export default {
   methods: {
     getList(item){
       let self = this
-      axios.get('./../../static/classify.json').then((res)=>{
+      axios.get('../../static/classify.json').then((res)=>{
         
         self.list = res.data;
         self.listInner = res.data[self.id-1].details

@@ -8,6 +8,9 @@ import Main from '@/components/main'
 import ShoppingCar from '@/components/shoppingCar'
 import ShoppingMall from '@/components/shoppingMall'
 import classify from '@/components/classify'
+import productDetails from '@/components/productDetails'
+import myOrder from '@/components/myOrder'
+import Address from '@/components/address'
 Vue.use(Router)
 
 export default new Router({
@@ -47,5 +50,20 @@ export default new Router({
       name: 'classify',
       component: classify
     },
+    {
+      path: '/productDetails',
+      name: 'productDetails',
+      component: productDetails
+    },
+    {
+      path: '/myOrder',
+      name: 'myOrder',
+      component: myOrder
+    },
+    {
+      path: '/Address',
+      name: 'Address',
+      component: Address
+    }
   ]
 })

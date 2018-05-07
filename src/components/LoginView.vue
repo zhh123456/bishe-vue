@@ -2,7 +2,9 @@
   <div class="login">
       <header>
         <div class="login-detail">
-            <i class="iconfont icon-jiantouzuo"></i>
+            <div @click="back()">
+                <i class="iconfont icon-jiantouzuo"></i>
+            </div>
             <router-link to="register">注册</router-link>
         </div> 
         <span>Yohu!Family账号可登录Yoho!Buy有货</span>
@@ -11,7 +13,7 @@
           <ul>
               <li>
                   <i class="iconfont icon-shouji-tianchong"></i>
-                  <input type="text" placeholder="请输入手机号" v-model="account">
+                  <input type="text" placeholder="请输入用户名" v-model="username">
               </li>
               <li>
                   <i class="iconfont icon-suo"></i>
@@ -20,7 +22,7 @@
                <li>
                   <i class="iconfont icon-yduidunpaishixin"></i>
                   <input type="text" placeholder="请输入随机数" v-model="randomNum">
-                  <span>0123</span>
+                  <span @click="getRandomAlphaNum()">{{randomNum}}</span>
               </li>
           </ul>
       </div>
@@ -31,60 +33,70 @@
 </template>
 
 <script>
+import { Toast } from 'mint-ui';
+import axios from 'axios'
 export default {
   data () {
     return {
-      account: '',
+      username: '',
       password: '',
-      randomNum:''
+      randomNum:'',
+     
     }
+  },
+  created () { 
+      if(this.randomNum == ""){
+          this.randomNum = '点击'
+      }
+      
   },
   methods: {
     login () {
       let params = {
-        account: this.account,
+        username: this.username,
         password: this.password
       }
-      this.$http.post('/api/user/login', params)
+      
+      axios.post('/api/user/login', params)
         .then((response) => {
-          console.log(response)
-          var message = response.body.message
-          if (response.body.status === 1000) {
-            message = response.body.data[0].account + ' ' + message
+            // console.log(response)
+          var message = response.data.message
+          if (response.data.status === 1000) {
+            this.$store.dispatch('userInfo',response.data.data[0])
+            localStorage.setItem('userInfo',JSON.stringify(response.data.data[0]))  
+            message = response.data.data[0].username + ' ' + message
+            // console.log(JSON.parse(localStorage.getItem('userInfo')))
           }
-          alert(message)
+          Toast({message });
+          let self = this;
+           
+          if(response.data.status === 1000){
+            setTimeout(function(){
+               self.$router.push({path:'/Main'})
+               },1000)
+          }
         })
         .catch((reject) => {
           console.log(reject)
         })
     },
-    register () {
-      let params = {
-        account: this.account,
-        password: this.password
-      }
-      this.$http.post('/api/user/register', params)
-        .then((response) => {
-          console.log(response)
-          var message = response.body.message
-          if (response.body.status === 1000) {
-            message = this.account + ' ' + message
-          }
-          alert(message)
-        })
-        .catch((reject) => {
-          console.log(reject)
-        })
+    back(){
+        this.$router.go(-1)
     },
-    getAllAccount () {
-      console.log('call getAllAccount')
-      this.$http.get('/api/user/all')
-        .then((response) => {
-          console.log(response)
-        })
-        .catch((reject) => {
-          console.log(reject)
-        })
+    // getAllAccount () {
+    //   console.log('call getAllAccount')
+    //   this.$http.get('/api/user/all')
+    //     .then((response) => {
+    //       console.log(response)
+    //     })
+    //     .catch((reject) => {
+    //       console.log(reject)
+    //     })
+    // },
+    getRandomAlphaNum() {
+        let rdmString = "";
+        for (; rdmString.length < 4; rdmString += Math.random().toString(36).substr(2));
+        this.randomNum = rdmString.substr(0, 4);
     }
   }
 }

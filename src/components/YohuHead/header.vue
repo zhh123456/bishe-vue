@@ -13,7 +13,7 @@ export default {
       }
   },
   created () {
-      if(this.$route.path== '/classify'|| this.$route.path == '/Main' ||this.$route.path == '/login' || this.$route.path == '/register'){
+      if(this.$route.path== '/classify'|| this.$route.path == '/Main' ||this.$route.path == '/login' || this.$route.path == '/register' || this.$route.path == '/productDetails' || this.$route.path == '/ShoppingCar' || this.$route.path == '/myOrder' || this.$route.path == '/Address'){
           this.isShowHeader = false
       }else{
           this.isShowHeader = true
@@ -22,7 +22,7 @@ export default {
    watch: {
       $route(to, from) {  
         // console.log(to);  
-        if(to.path == '/Main' || to.path =='/classify' || to.path == '/login' || to.path == '/register'){
+        if(to.path == '/Main' || to.path =='/classify' || to.path == '/login' || to.path == '/register' || to.path == '/productDetails' || to.path == '/ShoppingCar' || to.path == '/myOrder' ||to.path == '/Address'){
             this.isShowHeader = false
         }else{
             this.isShowHeader = true
